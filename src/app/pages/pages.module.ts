@@ -8,9 +8,6 @@ import {HomeModule} from './home/home.module';
   declarations: [],
   imports: [
     HomeModule
-  ],
-  exports: [
-    HomeModule
   ]
 })
 export class PagesModule { }
