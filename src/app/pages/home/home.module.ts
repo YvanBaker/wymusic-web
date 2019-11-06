@@ -12,9 +12,5 @@ import { HomeComponent } from './home.component';
     ShareModule,
     HomeRoutingModule
   ],
-  exports: [
-    HomeRoutingModule
-  ]
 })
 export class HomeModule { }
-
