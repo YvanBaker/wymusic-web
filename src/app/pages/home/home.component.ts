@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {HomeService} from '../../services/home.service';
+import {Banner} from "../../services/data-type/common.types";
 
 @Component({
   selector: 'app-home',
@@ -6,8 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
-
-  constructor() { }
+  banners: Banner[];
+  constructor(private homeServer:HomeService) {
+    this.homeServer.getBanners().subscribe(banners =>{
+      this.banners = banners;
+    });
+  }
 
   ngOnInit() {
   }

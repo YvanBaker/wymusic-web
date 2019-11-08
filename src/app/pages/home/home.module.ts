@@ -11,6 +11,6 @@ import { HomeComponent } from './home.component';
   imports: [
     ShareModule,
     HomeRoutingModule
-  ],
+  ]
 })
 export class HomeModule { }
