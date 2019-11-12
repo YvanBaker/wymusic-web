@@ -19,7 +19,7 @@ export class HomeService {
       .pipe(map((res: { banners: Banner[] }) => res.banners));
   }
 
-  getHotTag(): Observable<HotTag[]> {
+  getHotTags(): Observable<HotTag[]> {
     return this.http.get(this.url + 'playlist/hot')
       .pipe(map((res: { tags: HotTag[] }) => {
         return res.tags.sort( (x: HotTag, y: HotTag) => x.position - y.position).slice(0, 5);

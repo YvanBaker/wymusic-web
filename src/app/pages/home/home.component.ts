@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
   }
 
   getHotTags() {
-    this.homeServer.getHotTag().subscribe(hotTags => {
+    this.homeServer.getHotTags().subscribe(hotTags => {
       this.hotTags = hotTags;
       console.log(hotTags);
     });
