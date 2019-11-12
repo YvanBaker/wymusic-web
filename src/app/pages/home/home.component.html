@@ -24,13 +24,13 @@
                 <a>热门分类</a>
               </h2>
               <nav>
-                <a href="#">dsd</a>
-                <a href="#">dsd</a>
-                <a href="#">dsd</a>
-                <a href="#">dsd</a>
+                <a href="#" *ngFor="let item of hotTags">{{ item.name }}</a>
               </nav>
-
             </div>
+            <a>
+              更多
+              <i nz-icon type="arrow-right" theme="outline"></i>
+            </a>
           </div>
           <div class="down"></div>
         </div>
