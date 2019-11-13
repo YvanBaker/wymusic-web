@@ -28,6 +28,6 @@ export class HomeService {
 
   getSongSheetList(): Observable<SongSheet[]> {
     return this.http.get(this.url + 'personalized')
-      .pipe(map((res: { result: SongSheet[] }) => res.result.slice(0, 8)));
+      .pipe(map((res: { result: SongSheet[] }) => res.result.slice(0, 20)));
   }
 }

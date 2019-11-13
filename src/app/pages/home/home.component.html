@@ -29,10 +29,19 @@
             </div>
             <a>
               更多
-              <i nz-icon type="arrow-right" theme="outline"></i>
+              <i nz-icon type="arrow-right" theme="outline" style="color: red;"></i>
             </a>
           </div>
-          <div class="down"></div>
+          <div class="down">
+            <div class="down-wrap">
+              <app-single-sheet
+                class="sheet-item"
+                *ngFor="let item of songSheetList"
+                [sheet]="item">
+              </app-single-sheet>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="right"></div>

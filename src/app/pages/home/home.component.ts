@@ -25,14 +25,12 @@ export class HomeComponent implements OnInit {
   getBanners() {
     this.homeServer.getBanners().subscribe(banners => {
       this.banners = banners;
-      console.log(banners);
     });
   }
 
   getHotTags() {
     this.homeServer.getHotTags().subscribe(hotTags => {
       this.hotTags = hotTags;
-      console.log(hotTags);
     });
   }
 
