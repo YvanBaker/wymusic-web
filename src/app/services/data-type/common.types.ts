@@ -14,8 +14,16 @@ export interface HotTag {
 
 // 热门歌单
 export interface SongSheet {
-  id: string;
+  id: number;
   name: string;
   picUrl: string;
   playCount: number;
+}
+
+// 歌手
+export interface Singer {
+  id: number;
+  name: string;
+  picUrl: string;
+  albumSize: number;
 }
