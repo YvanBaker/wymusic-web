@@ -1,19 +1,22 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SingleSheetComponent } from './single-sheet/single-sheet.component';
 import {PlayCountPipe} from '../play-count.pipe';
+import {PlayerModule} from './player/player.module';
 
 
 
 @NgModule({
   declarations: [
     SingleSheetComponent,
-    PlayCountPipe
+    PlayCountPipe,
   ],
-  imports: [],
+  imports: [
+    PlayerModule
+  ],
   exports: [
     SingleSheetComponent,
-    PlayCountPipe
+    PlayCountPipe,
+    PlayerModule
   ]
 })
 export class UiModule { }

@@ -3,6 +3,8 @@ import {HomeService} from '../../services/home.service';
 import {Banner, HotTag, Singer, SongSheet} from '../../services/data-type/common.types';
 import {NzCarouselComponent} from 'ng-zorro-antd';
 import {SingerService} from '../../services/singer.service';
+import {ActivatedRoute} from '@angular/router';
+import { map } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-home',
@@ -19,35 +21,14 @@ export class HomeComponent implements OnInit {
   @ViewChild(NzCarouselComponent, { static: true }) private nzCarousel: NzCarouselComponent;
 
   constructor(private homeServer: HomeService,
-              private singerServer: SingerService
+              private singerServer: SingerService,
+              private route: ActivatedRoute
   ) {
-    this.getBanners();
-    this.getHotTags();
-    this.getSheetLists();
-    this.getEnterSingers();
-  }
-
-  getBanners() {
-    this.homeServer.getBanners().subscribe(banners => {
-      this.banners = banners;
-    });
-  }
-
-  getHotTags() {
-    this.homeServer.getHotTags().subscribe(hotTags => {
-      this.hotTags = hotTags;
-    });
-  }
-
-  getSheetLists() {
-    this.homeServer.getSongSheetList().subscribe(songSheetList => {
-      this.songSheetList = songSheetList;
-    });
-  }
-
-  getEnterSingers() {
-    this.singerServer.getEnterSinger().subscribe(enterSingers => {
-      this.enterSingers = enterSingers;
+    this.route.data.pipe(map(res => res.homeData)).subscribe(([banner, hotTag, songSheet, singer]) =>{
+      this.banners = banner;
+      this.hotTags = hotTag;
+      this.songSheetList = songSheet;
+      this.enterSingers = singer;
     });
   }
 
