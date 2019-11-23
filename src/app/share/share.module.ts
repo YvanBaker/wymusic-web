@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
 import {FormsModule} from '@angular/forms';
 import {UiModule} from './ui/ui.module';
-import { PlayCountPipe } from './play-count.pipe';
 
 
 
