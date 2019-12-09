@@ -13,7 +13,7 @@ export interface HotTag {
 
 
 // 热门歌单
-export interface SongSheet {
+export interface HotSongSheet {
   id: number;
   name: string;
   picUrl: string;
@@ -24,6 +24,34 @@ export interface SongSheet {
 export interface Singer {
   id: number;
   name: string;
-  picUrl: string;
+  img1v1Url: string;
   albumSize: number;
+}
+
+// 歌单
+export interface SongSheet {
+  id: number;
+  tags: string[];
+  name: string;
+  coverImgUrl: string;
+  description: string;
+  tracks: SongSheetList[];
+}
+
+// 歌单列表
+export interface SongSheetList {
+  name: string;
+  id: number;
+  ar: [ { id: number; name: string; } ];
+  al: {id: number; name: string; picUrl: string};
+  mv: number;
+  dt: number;
+  url: string;
+}
+
+// 歌曲信息
+export interface Song {
+  id: number;
+  url: string;
+  encodeType: string;
 }

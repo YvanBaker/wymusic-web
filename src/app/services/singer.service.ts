@@ -6,6 +6,8 @@ import { map } from 'rxjs/internal/operators';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import queryString from 'query-string';
 
+
+// 歌手管理
 interface SingerParams {
   offset: number;
   limit: number;
@@ -17,7 +19,6 @@ const defaultParams: SingerParams = {
   limit: 9,
   cat: '5001'
 };
-
 
 @Injectable({
   providedIn: ServicesModule

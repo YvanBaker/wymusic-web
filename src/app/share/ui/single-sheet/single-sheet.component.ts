@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {SongSheet} from '../../../services/data-type/common.types';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {HotSongSheet} from '../../../services/data-type/common.types';
 
 @Component({
   selector: 'app-single-sheet',
@@ -8,11 +8,16 @@ import {SongSheet} from '../../../services/data-type/common.types';
 })
 export class SingleSheetComponent implements OnInit {
 
-  @Input() sheet: SongSheet;
+  @Input() sheet: HotSongSheet;
+  // tslint:disable-next-line:no-output-on-prefix
+  @Output() onPlay = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  pushId(id: number) {
+    this.onPlay.emit(id);
+  }
 }

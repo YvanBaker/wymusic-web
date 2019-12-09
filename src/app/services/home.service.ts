@@ -1,11 +1,11 @@
 import {Inject, Injectable} from '@angular/core';
 import {API_CONFIG, ServicesModule} from './services.module';
-import {Banner, HotTag, SongSheet} from './data-type/common.types';
+import {Banner, HotTag, HotSongSheet} from './data-type/common.types';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/internal/operators';
 import { HttpClient } from '@angular/common/http';
 
-
+// 主页管理
 @Injectable({
   providedIn: ServicesModule
 })
@@ -26,8 +26,8 @@ export class HomeService {
       }));
   }
 
-  getSongSheetList(): Observable<SongSheet[]> {
+  getHotSongSheetList(): Observable<HotSongSheet[]> {
     return this.http.get(this.url + 'personalized')
-      .pipe(map((res: { result: SongSheet[] }) => res.result.slice(0, 20)));
+      .pipe(map((res: { result: HotSongSheet[] }) => res.result.slice(0, 20)));
   }
 }
