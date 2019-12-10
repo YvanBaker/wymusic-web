@@ -42,7 +42,7 @@ export interface SongSheet {
 export interface SongSheetList {
   name: string;
   id: number;
-  ar: [ { id: number; name: string; } ];
+  ar: Singer[];
   al: {id: number; name: string; picUrl: string};
   mv: number;
   dt: number;

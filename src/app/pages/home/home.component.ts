@@ -42,15 +42,8 @@ export class HomeComponent implements OnInit {
   }
 
   onPlaySheet(id: number) {
-    // this.sheetServer.getSongSheetList(id).subscribe( res => {
-    //   res.forEach( i => {
-    //
-    //   });
-    //   console.log(res);
-    // });
-    // this.sheetServer.getSongLit(id).(res => {
-    //   console.log(res);
-    // });
-    console.log(id);
+    this.sheetServer.getSongSheetList(id).subscribe(res => {
+      console.log(res);
+    });
   }
 }
