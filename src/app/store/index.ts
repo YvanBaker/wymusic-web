@@ -1,12 +1,20 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {StoreModule} from '@ngrx/store';
+import {playerReducer} from './reducers/player.reducer';
 
 
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule
+    StoreModule.forRoot({player: playerReducer}, {
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+        strictStateSerializability: true,
+        strictActionSerializability: true,
+      }
+    })
   ]
 })
 export class AppStoreModule { }

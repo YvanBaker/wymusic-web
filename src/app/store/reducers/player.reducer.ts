@@ -1,6 +1,7 @@
 import {PlayMode} from '../../share/ui/player/player-type';
 import { SongSheetList } from 'src/app/services/data-type/common.types';
-import { createReducer, on } from '@ngrx/store';
+import {Action, createReducer, on} from '@ngrx/store';
+import {SetPlaying} from '../actions/player.actions';
 
 export interface PlayState {
   playing: boolean;
@@ -18,4 +19,11 @@ export const initialState: PlayState = {
   currentIndex: -1
 };
 
-const reducer = createReducer(initialState);
+const reducer = createReducer(
+  initialState,
+  on(SetPlaying, (stare, { playing }) => ({ ...stare, playing })),
+);
+
+export function playerReducer(stare: PlayState, action: Action) {
+  return reducer(stare, action);
+}
