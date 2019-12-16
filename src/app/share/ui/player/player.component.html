@@ -54,6 +54,7 @@
     #audioEl
     [src]="song?.url"
     (canplay)="onCanPlay()"
+    (ended)="onEnded()"
   >
   </audio>
 </div>

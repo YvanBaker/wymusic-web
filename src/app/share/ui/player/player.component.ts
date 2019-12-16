@@ -124,5 +124,13 @@ export class PlayerComponent implements OnInit {
     this.songReady = false;
   }
 
-
+  // 播放结束
+  onEnded() {
+    this.playing = false;
+    if (this.mode.type === 'singleLoop') {
+      this.audioEl.loop = true;
+    } else {
+      this.onNext(this.currentIndex + 1);
+    }
+  }
 }
