@@ -34,7 +34,7 @@ export class SongService {
       if (url) {
         result.push({...songSheetList, url});
       } else {
-        result.push({ ...songSheetList, url: null });
+        result.push({ ...songSheetList });
       }
     });
     return result;

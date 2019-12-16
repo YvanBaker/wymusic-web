@@ -3,6 +3,7 @@ import {select, Store} from '@ngrx/store';
 import {getCurrentIndex, getCurrentSong, getPlayList, getPlayMode, getSongList} from '../../../store/selectors/player.selector';
 import {SongSheetList} from '../../../services/data-type/common.types';
 import {PlayMode} from './player-type';
+import {SetCurrentIndex} from '../../../store/actions/player.actions';
 
 
 
@@ -18,6 +19,8 @@ export class PlayerComponent implements OnInit {
   currentIndex: number;
   mode: PlayMode;
   song: SongSheetList;
+  playing =  false;
+  songReady = false;
 
   @ViewChild('audioEl', {static: true}) private audio: ElementRef;
   private audioEl: HTMLAudioElement;
@@ -60,13 +63,66 @@ export class PlayerComponent implements OnInit {
 
   private watchCurrentSong(song: SongSheetList) {
     this.song = song;
+    console.log(song);
   }
 
   onCanPlay() {
+    this.songReady = true;
+    this.playing = true;
     this.play();
   }
 
   private play() {
     this.audioEl.play();
   }
+
+  onToggle() {
+    if ( this.songReady ) {
+      this.playing = !this.playing;
+      if (this.playing) {
+        this.audioEl.play();
+      } else {
+        this.audioEl.pause();
+      }
+    }
+    return;
+  }
+
+  // 上一首
+  onPrev(index: number) {
+    if (this.songReady) {
+      if (this.playList.length === 1) {
+        this.audioEl.pause();
+      } else {
+        const newIndex = index < 0 ? this.playList.length - 1 : index;
+        this.playing = false;
+        this.updateIndex(newIndex);
+        if (this.song.url === null ) {
+          this.onPrev(newIndex);
+        }
+        this.onCanPlay();
+      }
+    }
+    return;
+  }
+
+  // 下一首
+  onNext(index: number) {
+    if (this.songReady) {
+      if (this.playList.length === 1) {
+        this.audioEl.pause();
+      } else {
+        const newIndex = index > this.playList.length ? 0 : index;
+        this.updateIndex(newIndex);
+      }
+    }
+    return;
+  }
+
+  private updateIndex(newIndex: number) {
+    this.store$.dispatch(SetCurrentIndex({ currentIndex: newIndex }));
+    this.songReady = false;
+  }
+
+
 }
