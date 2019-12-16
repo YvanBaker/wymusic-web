@@ -15,29 +15,24 @@
         <i class="next" (click)="onNext(currentIndex + 1)"></i>
       </div>
       <div class="head">
-        <img src="http://s4.music.126.net/style/web2/img/default/default_album.jpg" alt="">
+        <img [src]="picUrl" alt="">
         <i class="mask"></i>
       </div>
       <div class="play">
-        <div class="words clearfix" [hidden]="true">
-          <p class="ellipsis">歌名</p>
+        <div class="words clearfix" >
+          <p class="ellipsis">{{song?.name}}</p>
           <ul class="songs">
-            <li>
-              <a>歌手1</a>
-            </li>
-            <li>
-              <a>歌手2</a>
-            </li>
-            <li>
-              <a>歌手3</a>
+            <li *ngFor="let item of song?.ar; last as isLast">
+              <a>{{item.name}}</a>
+              <span [hidden]="isLast">/</span>
             </li>
           </ul>
         </div>
         <div class="bar">
           <div class="slider-wrap clearfix">
-            <div>进度条</div>
+            <span>123</span>
           </div>
-          <span class="time"><em>02:11</em>/4:35</span>
+          <div style="float: right"><em>02:11</em>/4:35</div>
         </div>
       </div>
       <div class="oper">

@@ -1,6 +1,7 @@
 @import "../../../../assets/styles/varibles";
 @import "../../../../assets/styles/mixins";
 .m-player{
+  font-size: 12px;
   position: fixed;
   zoom: 1;
   left: 0;
@@ -93,7 +94,7 @@
         width: 608px;
         .words{
           color: @white-color;
-          min-height: 18px;
+          height: 25px;
           text-shadow: 0 1px 0 @box-shadow-base;
           &.hide{
             visibility: hidden;
@@ -103,22 +104,28 @@
             max-width: 300px;
             margin-right: 10px;
             cursor: pointer;
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
           }
           .songs {
             float: left;
             li{
               float: left;
+              color: #9b9b9b;
+              font-size: 12px;
+              font-family: Arial, Helvetica, sans-serif;
             }
           }
         }
         .bar{
           color: @white-color;
+          height: 18px;
           .slider-wrap{
             display: inline-block;
             width: 490px;
             margin-right: 10px;
             vertical-align: bottom;
-            padding: 8px 0;
+            padding: 0;
           }
         }
       }

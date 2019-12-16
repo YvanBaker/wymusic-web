@@ -33,8 +33,6 @@ export class SongService {
       const url = songs.find(song => song.id === songSheetList.id).url;
       if (url) {
         result.push({...songSheetList, url});
-      } else {
-        result.push({ ...songSheetList });
       }
     });
     return result;

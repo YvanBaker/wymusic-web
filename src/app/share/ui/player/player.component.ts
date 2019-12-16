@@ -66,6 +66,10 @@ export class PlayerComponent implements OnInit {
     console.log(song);
   }
 
+  get picUrl(): string {
+    return this.song ? this.song.al.picUrl : '//s4.music.126.net/style/web2/img/default/default_album.jpg';
+  }
+
   onCanPlay() {
     this.songReady = true;
     this.playing = true;
@@ -95,12 +99,7 @@ export class PlayerComponent implements OnInit {
         this.audioEl.pause();
       } else {
         const newIndex = index < 0 ? this.playList.length - 1 : index;
-        this.playing = false;
         this.updateIndex(newIndex);
-        if (this.song.url === null ) {
-          this.onPrev(newIndex);
-        }
-        this.onCanPlay();
       }
     }
     return;
@@ -120,6 +119,7 @@ export class PlayerComponent implements OnInit {
   }
 
   private updateIndex(newIndex: number) {
+    this.playing = false;
     this.store$.dispatch(SetCurrentIndex({ currentIndex: newIndex }));
     this.songReady = false;
   }
