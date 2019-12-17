@@ -3,9 +3,18 @@ import {select, Store} from '@ngrx/store';
 import {getCurrentIndex, getCurrentSong, getPlayList, getPlayMode, getSongList} from '../../../store/selectors/player.selector';
 import {SongSheetList} from '../../../services/data-type/common.types';
 import {PlayMode} from './player-type';
-import {SetCurrentIndex} from '../../../store/actions/player.actions';
+import {SetCurrentIndex, SetPlayMode} from '../../../store/actions/player.actions';
 
-
+const modeTypes: PlayMode[] = [{
+  type: 'loop',
+  label: '循环'
+}, {
+  type: 'random',
+  label: '随机'
+}, {
+  type: 'singleLoop',
+  label: '单曲循环'
+}];
 
 
 @Component({
@@ -17,7 +26,8 @@ export class PlayerComponent implements OnInit {
   songList: SongSheetList[];
   playList: SongSheetList[];
   currentIndex: number;
-  mode: PlayMode;
+  currentMode: PlayMode;
+  modeCount = 0;
   song: SongSheetList;
   playing =  false;
   songReady = false;
@@ -50,6 +60,7 @@ export class PlayerComponent implements OnInit {
 
   private watchList(list: SongSheetList[], type: string) {
     this[type] = list;
+    console.log(this[type].length);
   }
 
   private watchCurrentIndex(index: number) {
@@ -58,7 +69,7 @@ export class PlayerComponent implements OnInit {
 
   private watchPlaMode(mode: PlayMode) {
     console.log(mode);
-    this.mode = mode;
+    this.currentMode = mode;
   }
 
   private watchCurrentSong(song: SongSheetList) {
@@ -66,10 +77,11 @@ export class PlayerComponent implements OnInit {
     console.log(song);
   }
 
+  // 获取歌曲图片Url
   get picUrl(): string {
     return this.song ? this.song.al.picUrl : '//s4.music.126.net/style/web2/img/default/default_album.jpg';
   }
-
+  // 点击卡片播放按钮
   onCanPlay() {
     this.songReady = true;
     this.playing = true;
@@ -127,10 +139,16 @@ export class PlayerComponent implements OnInit {
   // 播放结束
   onEnded() {
     this.playing = false;
-    if (this.mode.type === 'singleLoop') {
+    if (this.currentMode.type === 'singleLoop') {
       this.audioEl.loop = true;
     } else {
       this.onNext(this.currentIndex + 1);
     }
+  }
+
+  // 改变播放模式
+  changeMode() {
+    const temp = modeTypes[++this.modeCount % 3];
+    this.store$.dispatch(SetPlayMode({ playMode: temp }));
   }
 }

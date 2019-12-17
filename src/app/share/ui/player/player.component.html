@@ -32,7 +32,7 @@
           <div class="slider-wrap clearfix">
             <span>123</span>
           </div>
-          <div style="float: right"><em>02:11</em>/4:35</div>
+          <div style="float: right;margin-right: 20px"><em>02:11</em>/4:35</div>
         </div>
       </div>
       <div class="oper">
@@ -42,7 +42,9 @@
       </div>
       <div class="ctrl">
         <i class="volume" title="音量"></i>
-        <i class="loop" title="循环"></i>
+        <i [class]="currentMode.type"
+           [title]="currentMode.label"
+           (click)="changeMode()"></i>
         <p class="open">
           <span></span>
         </p>
