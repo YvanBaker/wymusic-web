@@ -92,6 +92,13 @@ export class PlayerComponent implements OnInit {
     this.audioEl.play();
   }
 
+
+  // 单曲循环
+  private loop() {
+    this.audioEl.currentTime = 0;
+    this.play();
+  }
+
   onToggle() {
     if ( this.songReady ) {
       this.playing = !this.playing;
@@ -140,7 +147,7 @@ export class PlayerComponent implements OnInit {
   onEnded() {
     this.playing = false;
     if (this.currentMode.type === 'singleLoop') {
-      this.audioEl.loop = true;
+      this.loop();
     } else {
       this.onNext(this.currentIndex + 1);
     }
