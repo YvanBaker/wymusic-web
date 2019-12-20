@@ -60,7 +60,6 @@ export class PlayerComponent implements OnInit {
 
   private watchList(list: SongSheetList[], type: string) {
     this[type] = list;
-    console.log(this[type].length);
   }
 
   private watchCurrentIndex(index: number) {
@@ -68,13 +67,11 @@ export class PlayerComponent implements OnInit {
   }
 
   private watchPlaMode(mode: PlayMode) {
-    console.log(mode);
     this.currentMode = mode;
   }
 
   private watchCurrentSong(song: SongSheetList) {
     this.song = song;
-    console.log(song);
   }
 
   // 获取歌曲图片Url
