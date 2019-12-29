@@ -31,6 +31,7 @@ export class PlayerComponent implements OnInit {
   song: SongSheetList;
   playing =  false;
   songReady = false;
+  show = false;
 
   @ViewChild('audioEl', {static: true}) private audio: ElementRef;
   private audioEl: HTMLAudioElement;
@@ -85,10 +86,10 @@ export class PlayerComponent implements OnInit {
     this.play();
   }
 
+  // 音乐播放
   private play() {
     this.audioEl.play();
   }
-
 
   // 单曲循环
   private loop() {
@@ -96,6 +97,7 @@ export class PlayerComponent implements OnInit {
     this.play();
   }
 
+  // 点击播放暂停按钮时
   onToggle() {
     if ( this.songReady ) {
       this.playing = !this.playing;
@@ -112,7 +114,7 @@ export class PlayerComponent implements OnInit {
   onPrev(index: number) {
     if (this.songReady) {
       if (this.playList.length === 1) {
-        this.audioEl.pause();
+        this.loop();
       } else {
         const newIndex = index < 0 ? this.playList.length - 1 : index;
         this.updateIndex(newIndex);
@@ -125,7 +127,7 @@ export class PlayerComponent implements OnInit {
   onNext(index: number) {
     if (this.songReady) {
       if (this.playList.length === 1) {
-        this.audioEl.pause();
+        this.loop();
       } else {
         const newIndex = index > this.playList.length ? 0 : index;
         this.updateIndex(newIndex);
@@ -134,6 +136,7 @@ export class PlayerComponent implements OnInit {
     return;
   }
 
+  // 更新索引值
   private updateIndex(newIndex: number) {
     this.playing = false;
     this.store$.dispatch(SetCurrentIndex({ currentIndex: newIndex }));
@@ -155,4 +158,22 @@ export class PlayerComponent implements OnInit {
     const temp = modeTypes[++this.modeCount % 3];
     this.store$.dispatch(SetPlayMode({ playMode: temp }));
   }
+
+  // 点击播放列表某一首歌曲播放
+  onPlayList(index: number) {
+    if (this.songReady) {
+      if (this.currentIndex === index) {
+        this.loop();
+      } else {
+        this.updateIndex(index);
+      }
+    }
+    return;
+  }
+
+  // 点击播放列表图标是
+  onOpen() {
+    this.show = !this.show;
+  }
+
 }

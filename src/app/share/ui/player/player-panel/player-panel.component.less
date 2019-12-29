@@ -9,6 +9,7 @@
   height: 300px;
   background-color: @play-bg-color;
   overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
   &.show{
     display: block;
   }
@@ -63,14 +64,14 @@
         top:15px;
         &:hover{
           .trush{
-            background-position: -51px -20px;
+            background-position: -48px -20px;
           }
         }
         .trush{
-          width: 13px;
+          width: 20px;
           height:16px;
           background-image: url('../../../../../assets/images/playlist.png');
-          background-position: -51px 0;
+          background-position: -48px 0;
         }
       }
 
@@ -130,6 +131,7 @@
       height: 260px;
       width: 553px;
       color: @wy-text-prev-color;
+      line-height: 28px;
       ul{
         li{
           overflow: hidden;
@@ -141,23 +143,20 @@
           .arrow{
             .icon('../images/playlist.png', 10px, 13px);
             background-position: -182px 0;
-            margin: 6px 10px 0 10px;
+            margin: 8px 10px 0 10px;
             visibility: hidden;
           }
           .name{
-            width: 280px;
+            width: 266px;
           }
           .singers{
             width: 70px;
             margin: 0 10px;
             float: left;
-            height: 20px;
-            .singer-item{
-              float: left;
-              span{
-                margin: 0 5px 0 5px;
-              }
-            }
+            height: 28px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
           .duration{
             margin: 0 10px;
@@ -171,7 +170,7 @@
             }
           }
           .icons{
-            margin-top: 4px;
+            margin-top: 8px;
             visibility: hidden;
             overflow: hidden;
             .ico{
@@ -208,6 +207,7 @@
           }
         }
         .current{
+          color: @white-color;
           background-color: @black-color;
           .arrow{
             visibility: visible;

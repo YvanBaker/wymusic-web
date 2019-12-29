@@ -1,4 +1,4 @@
-<div class="play-panel show">
+<div class="play-panel" [class.show]="show">
   <div class="hd">
     <div class="hdc">
       <h4>播放列表（<span>{{songList.length}}</span>）</h4>
@@ -10,8 +10,9 @@
         <i class="icon trush" title="清除全部"></i>清除
       </div>
       <div class="playing-name">{{currentSong?.name}}</div>
-      <div class="close">
+      <div class="close" (click)="clickClose.emit()">
         <i class="icon"></i>
+
       </div>
     </div>
   </div>
@@ -20,7 +21,10 @@
     <div class="msk"></div>
     <div class="list-wrap">
       <ul>
-        <li *ngFor="let item of songList; index as i" >
+        <li
+          *ngFor="let item of songList; index as i"
+          [class.current]="currentIndex === i"
+        (click)="pushIndex(i)">
           <i class="col arrow"></i>
           <div class="col name ellipsis">{{item.name}}</div>
           <div class="col icons">
@@ -28,13 +32,14 @@
             <i class="ico share" title="分享"></i>
             <i class="ico trush" title="删除"></i>
           </div>
-          <div class="singers clearfix ellipsis">
-            <div class="singer-item" *ngFor="let singer of item.ar;last as isLast">
-              <a href="" class="col ellipsis">{{singer.name}}</a>
-              <span [hidden]="isLast">/</span>
-            </div>
+          <div class="singers clearfix">
+            <span [title]="getSingers(item)" >
+              <a href="#" *ngFor="let singer of item.ar;last as isLast">
+                {{singer.name}}<span [hidden]="isLast">/</span>
+              </a>
+            </span>
           </div>
-          <div class="col duration">{{(item.dt/1000)}}</div>
+          <div class="col duration">{{(item.dt/1000) | formatTime}}</div>
           <div class="col link"></div>
         </li>
       </ul>

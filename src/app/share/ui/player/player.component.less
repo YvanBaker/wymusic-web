@@ -154,7 +154,7 @@
       }
       .ctrl{
         position: relative;
-        width: 113px;
+        width: 149px;
         padding-left: 13px;
         i{
           margin: 11px 2px 0 0;
@@ -187,15 +187,18 @@
         .open{
           display: inline-block;
           cursor: pointer;
-          span{
+          a{
             display: block;
             text-align: center;
-            color: @text-color;
+            color: #666;
+            padding-left: 21px;
+            line-height: 27px;
             text-shadow: 0 1px 0 @box-shadow-base;
-            .icon('../images/playbar.png', 24px, 24px);
+            .icon('../images/playbar.png', 60px, 24px);
             background-position: -42px -68px;
             &:hover{
               background-position: -42px -98px;
+              text-decoration: none;
             }
           }
         }

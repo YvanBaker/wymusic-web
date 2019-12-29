@@ -32,7 +32,7 @@
           <div class="slider-wrap clearfix">
             <span>123</span>
           </div>
-          <div style="float: right;margin-right: 20px"><em>02:11</em>/4:35</div>
+          <div style="float: right;margin-right: 20px"><em>02:11</em>/{{song?.dt/1000 | formatTime}}</div>
         </div>
       </div>
       <div class="oper">
@@ -45,13 +45,17 @@
         <i [class]="currentMode.type"
            [title]="currentMode.label"
            (click)="changeMode()"></i>
-        <p class="open">
-          <span></span>
+        <p class="open" (click)="onOpen()">
+          <a>{{songList.length}}</a>
         </p>
       </div>
       <app-player-panel
         [songList] = "songList"
-        [currentSong] = "song">
+        [currentSong] = "song"
+        [currentIndex]="currentIndex"
+        [show]="show"
+        (onMusis)="onPlayList($event)"
+        (clickClose)="onOpen()" >
       </app-player-panel>
     </div>
   </div>
@@ -60,7 +64,6 @@
     #audioEl
     [src]="song?.url"
     (canplay)="onCanPlay()"
-    (ended)="onEnded()"
-  >
+    (ended)="onEnded()">
   </audio>
 </div>
