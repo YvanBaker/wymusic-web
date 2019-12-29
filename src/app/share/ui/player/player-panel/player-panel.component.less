@@ -132,6 +132,25 @@
       width: 553px;
       color: @wy-text-prev-color;
       line-height: 28px;
+      .nocnt{
+        color: #aaa;
+        padding-top: 85px;
+        text-align: center;
+        line-height: 43px;
+        display: block;
+        .ico{
+          display: inline-block;
+          position: relative;
+          top: -4px;
+          margin-right: 3px;
+          .icon('../images/playlist.png', 36px, 29px);
+          background-position: -138px 0;
+          vertical-align: middle;
+        }
+        &.show{
+          display: none;
+        }
+      }
       ul{
         li{
           overflow: hidden;
@@ -214,6 +233,7 @@
           }
         }
       }
+
     }
 
     .list-lyric{

@@ -3,7 +3,8 @@ import {select, Store} from '@ngrx/store';
 import {getCurrentIndex, getCurrentSong, getPlayList, getPlayMode, getSongList} from '../../../store/selectors/player.selector';
 import {SongSheetList} from '../../../services/data-type/common.types';
 import {PlayMode} from './player-type';
-import {SetCurrentIndex, SetPlayMode} from '../../../store/actions/player.actions';
+import {SetCurrentIndex, SetPlayList, SetPlayMode} from '../../../store/actions/player.actions';
+import {shuffle} from '../../../utils/array';
 
 const modeTypes: PlayMode[] = [{
   type: 'loop',
@@ -26,6 +27,7 @@ export class PlayerComponent implements OnInit {
   songList: SongSheetList[];
   playList: SongSheetList[];
   currentIndex: number;
+  songIndex = 0;
   currentMode: PlayMode;
   modeCount = 0;
   song: SongSheetList;
@@ -65,10 +67,29 @@ export class PlayerComponent implements OnInit {
 
   private watchCurrentIndex(index: number) {
     this.currentIndex = index;
+    this.store$.pipe(select('player')).pipe(select(getPlayMode)).subscribe( mode => {
+      if (mode.type === 'random') {
+        if (this.song) {
+          this.songIndex = this.playList.findIndex(item => item.id === this.song.id);
+        } else {
+          this.songIndex = 0;
+        }
+      } else {
+        this.songIndex = index;
+      }
+    });
   }
 
   private watchPlaMode(mode: PlayMode) {
     this.currentMode = mode;
+    if (this.songList) {
+      let list = this.songList.slice();
+      if ( mode.type === 'random' ) {
+        list = shuffle(this.songList);
+      }
+      this.updateCurrentIndex(list, this.song);
+      this.store$.dispatch(SetPlayList({playList: list}));
+    }
   }
 
   private watchCurrentSong(song: SongSheetList) {
@@ -79,6 +100,7 @@ export class PlayerComponent implements OnInit {
   get picUrl(): string {
     return this.song ? this.song.al.picUrl : '//s4.music.126.net/style/web2/img/default/default_album.jpg';
   }
+
   // 点击卡片播放按钮
   onCanPlay() {
     this.songReady = true;
@@ -118,6 +140,7 @@ export class PlayerComponent implements OnInit {
       } else {
         const newIndex = index < 0 ? this.playList.length - 1 : index;
         this.updateIndex(newIndex);
+        this.songIndex = this.songList.findIndex(item => item.id === this.song.id);
       }
     }
     return;
@@ -129,8 +152,9 @@ export class PlayerComponent implements OnInit {
       if (this.playList.length === 1) {
         this.loop();
       } else {
-        const newIndex = index > this.playList.length ? 0 : index;
+        const newIndex = index > this.playList.length - 1 ? 0 : index;
         this.updateIndex(newIndex);
+        this.songIndex = this.songList.findIndex(item => item.id === this.song.id);
       }
     }
     return;
@@ -162,10 +186,20 @@ export class PlayerComponent implements OnInit {
   // 点击播放列表某一首歌曲播放
   onPlayList(index: number) {
     if (this.songReady) {
-      if (this.currentIndex === index) {
-        this.loop();
+      if (this.currentMode.type === 'random') {
+        const newIndex = this.playList.findIndex(item => item.id === this.songList[index].id);
+        if (newIndex === this.currentIndex) {
+          this.loop();
+        } else {
+          this.updateIndex(newIndex);
+          this.songIndex = index;
+        }
       } else {
-        this.updateIndex(index);
+        if (this.currentIndex === index) {
+          this.loop();
+        } else {
+          this.updateIndex(index);
+        }
       }
     }
     return;
@@ -176,4 +210,9 @@ export class PlayerComponent implements OnInit {
     this.show = !this.show;
   }
 
+  // 随机播放是更改索引值
+  private updateCurrentIndex(list: SongSheetList[], song: SongSheetList) {
+    const newIndex = list.findIndex(item => item.id === song.id);
+    this.store$.dispatch(SetCurrentIndex({currentIndex: newIndex}));
+  }
 }

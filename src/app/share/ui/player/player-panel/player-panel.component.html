@@ -19,11 +19,22 @@
   <div class="bd">
     <img class="imgbg" src="{{currentSong?.al.picUrl}}" alt="">
     <div class="msk"></div>
-    <div class="list-wrap">
+    <div class="list-wrap" >
+      <div class="nocnt" [class.show]="songList.length">
+        <i class="ico ico-face"></i>
+        <span>你还没有添加任何歌曲</span><br>
+        <span>
+          去首页
+          <a href="">发现音乐</a>
+          ，或在
+          <a href="">我的音乐</a>
+          收听自己收藏的歌单
+        </span>
+      </div>
       <ul>
         <li
           *ngFor="let item of songList; index as i"
-          [class.current]="currentIndex === i"
+          [class.current]="songIndex === i"
         (click)="pushIndex(i)">
           <i class="col arrow"></i>
           <div class="col name ellipsis">{{item.name}}</div>

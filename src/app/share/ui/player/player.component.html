@@ -45,14 +45,14 @@
         <i [class]="currentMode.type"
            [title]="currentMode.label"
            (click)="changeMode()"></i>
-        <p class="open" (click)="onOpen()">
+        <p class="open" (click)="onOpen()" title="播放列表">
           <a>{{songList.length}}</a>
         </p>
       </div>
       <app-player-panel
         [songList] = "songList"
         [currentSong] = "song"
-        [currentIndex]="currentIndex"
+        [songIndex]="songIndex"
         [show]="show"
         (onMusis)="onPlayList($event)"
         (clickClose)="onOpen()" >

@@ -9,7 +9,7 @@ import {SongSheetList} from '../../../../services/data-type/common.types';
 export class PlayerPanelComponent implements OnInit, OnChanges {
   @Input() songList: SongSheetList[];
   @Input() currentSong: SongSheetList;
-  @Input() currentIndex: number;
+  @Input() songIndex: number;
   @Input() show: boolean;
   // tslint:disable-next-line:no-output-on-prefix
   @Output() onMusis = new EventEmitter<number>();
