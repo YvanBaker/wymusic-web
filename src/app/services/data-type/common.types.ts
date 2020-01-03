@@ -55,3 +55,8 @@ export interface Song {
   url: string;
   encodeType: string;
 }
+
+export interface Lyric {
+  lrc: {version: number; lyric: string};
+  tlyric: {version: number; lyric: string};
+}

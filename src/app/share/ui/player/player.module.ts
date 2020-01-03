@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './player.component';
 import { PlayerPanelComponent } from './player-panel/player-panel.component';
-import {FormatTimePipe} from '../../pipes/format-time.pipe';
+import { FormatTimePipe } from '../../pipes/format-time.pipe';
+import { ScrollComponent } from './scroll/scroll.component';
+import { SliderModule } from '../slider/slider.module';
+import {FormsModule} from '@angular/forms';
 
 
 
@@ -10,14 +13,19 @@ import {FormatTimePipe} from '../../pipes/format-time.pipe';
   declarations: [
     PlayerComponent,
     PlayerPanelComponent,
-    FormatTimePipe
+    FormatTimePipe,
+    ScrollComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    SliderModule
   ],
   exports: [
     PlayerComponent,
-    FormatTimePipe
+    FormatTimePipe,
+    ScrollComponent,
+    SliderModule
   ]
 })
 export class PlayerModule { }

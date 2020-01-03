@@ -126,7 +126,7 @@
           height: 18px;
           .slider-wrap{
             display: inline-block;
-            width: 490px;
+            width: 493px;
             margin-right: 10px;
             vertical-align: bottom;
             padding: 0;
@@ -161,6 +161,12 @@
           .icon('../images/playbar.png', 25px, 25px);
           &.volume{
             background-position: -2px -248px;
+            &.mute {
+              background-position: -104px -69px;
+              &:hover{
+                background-position: -126px -69px;
+              }
+            }
             &:hover{
               background-position: -31px -248px;
             }

@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {API_CONFIG, ServicesModule} from './services.module';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Song,  SongSheetList} from './data-type/common.types';
+import {Lyric, Song, SongSheetList} from './data-type/common.types';
 import {map} from 'rxjs/operators';
 
 
@@ -25,6 +25,12 @@ export class SongService {
     const ids = songListArr.map(item => item.id).join(',');
     return this.getSongUrl(ids).
       pipe(map(songUrl => this.generateSongList(songListArr, songUrl)));
+  }
+
+  getSongLrc(id: number): Observable<Lyric> {
+    const params = new HttpParams().set('id', id.toString());
+    return this.http.get(this.url + 'lyric', { params })
+      .pipe(map(res => res as Lyric));
   }
 
   private generateSongList(songSheetLists: SongSheetList[], songs: Song[]): SongSheetList[] {

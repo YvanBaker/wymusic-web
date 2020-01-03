@@ -19,18 +19,7 @@
   <div class="bd">
     <img class="imgbg" src="{{currentSong?.al.picUrl}}" alt="">
     <div class="msk"></div>
-    <div class="list-wrap" >
-      <div class="nocnt" [class.show]="songList.length">
-        <i class="ico ico-face"></i>
-        <span>你还没有添加任何歌曲</span><br>
-        <span>
-          去首页
-          <a href="">发现音乐</a>
-          ，或在
-          <a href="">我的音乐</a>
-          收听自己收藏的歌单
-        </span>
-      </div>
+    <app-scroll class="list-wrap" [data] = "songList" (onScrollEnd)="scrollY = $event">
       <ul>
         <li
           *ngFor="let item of songList; index as i"
@@ -54,7 +43,22 @@
           <div class="col link"></div>
         </li>
       </ul>
-    </div>
-    <div class="list-lyric"></div>
+      <div class="nocnt" [class.show]="songList.length">
+        <i class="ico ico-face"></i>
+        <span>你还没有添加任何歌曲</span><br>
+        <span>
+          去首页
+          <a href="">发现音乐</a>
+          ，或在
+          <a href="">我的音乐</a>
+          收听自己收藏的歌单
+        </span>
+      </div>
+    </app-scroll>
+    <app-scroll class="list-lyric">
+      <ul>
+        <li *ngFor="let item of currentLyric">{{item.txt}} <br> {{item.txtCN}}</li>
+      </ul>
+    </app-scroll>
   </div>
 </div>

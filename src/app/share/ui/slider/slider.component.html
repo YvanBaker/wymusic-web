@@ -1,0 +1,14 @@
+<!--<div class="barbg">
+  <div class="rdy"></div>
+  <div class="cur">
+    <span class="btn">
+      <i></i>
+    </span>
+  </div>
+</div>-->
+
+<div class="slider" #slider [class.slider-vertical] = "vertical">
+  <app-slider-track [vertical]="vertical" [length]="bufferOffset" [buffer] = 'true'></app-slider-track>
+  <app-slider-track [vertical]="vertical" [length]="offset"></app-slider-track>
+  <app-slider-handle [vertical]="vertical" [offset]="offset" ></app-slider-handle>
+</div>

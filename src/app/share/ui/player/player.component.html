@@ -1,4 +1,4 @@
-<div class="m-player">
+<div class="m-player" (click)="selfClick = true">
   <div class="hand">
 
   </div>
@@ -30,9 +30,9 @@
         </div>
         <div class="bar">
           <div class="slider-wrap clearfix">
-            <span>123</span>
+            <app-slider [song]="song" [bufferOffset]= "bufferPercent" [(ngModel)]="percent"  (onAfterChange)="onPercentChange($event)"></app-slider>
           </div>
-          <div style="float: right;margin-right: 20px"><em>02:11</em>/{{song?.dt/1000 | formatTime}}</div>
+          <div style="float: right;margin-right: 20px"><em>{{currentTime | formatTime}}</em>/{{duration| formatTime}}</div>
         </div>
       </div>
       <div class="oper">
@@ -41,20 +41,27 @@
 
       </div>
       <div class="ctrl">
-        <i class="volume" title="音量"></i>
+        <i class="volume" title="音量" (click)="toggleVolPanel($event)" [class.mute]="isMute"></i>
         <i [class]="currentMode.type"
            [title]="currentMode.label"
            (click)="changeMode()"></i>
         <p class="open" (click)="onOpen()" title="播放列表">
           <a>{{songList.length}}</a>
         </p>
+        <div class="control-vol" [hidden]="!showVolumePanel">
+          <app-slider
+            [vertical]="true"
+            [(ngModel)]="volume"
+            (ngModelChange)="onVolumeChange($event)"
+            ></app-slider>
+        </div>
       </div>
       <app-player-panel
         [songList] = "songList"
         [currentSong] = "song"
         [songIndex]="songIndex"
         [show]="show"
-        (onMusis)="onPlayList($event)"
+        (onMusic)="onPlayList($event)"
         (clickClose)="onOpen()" >
       </app-player-panel>
     </div>
@@ -64,6 +71,7 @@
     #audioEl
     [src]="song?.url"
     (canplay)="onCanPlay()"
-    (ended)="onEnded()">
+    (ended)="onEnded()"
+    (timeupdate)="onTimeUpdate($event)">
   </audio>
 </div>

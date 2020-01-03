@@ -1,5 +1,9 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren} from '@angular/core';
 import {SongSheetList} from '../../../../services/data-type/common.types';
+import {ScrollComponent} from '../scroll/scroll.component';
+import {timer} from 'rxjs';
+import {SongService} from '../../../../services/song.service';
+import {BaseLyricLine, LyricC} from './lyric';
 
 @Component({
   selector: 'app-player-panel',
@@ -12,9 +16,17 @@ export class PlayerPanelComponent implements OnInit, OnChanges {
   @Input() songIndex: number;
   @Input() show: boolean;
   // tslint:disable-next-line:no-output-on-prefix
-  @Output() onMusis = new EventEmitter<number>();
+  @Output() onMusic = new EventEmitter<number>();
   @Output() clickClose = new EventEmitter<void>();
-  constructor() { }
+
+  scrollY = 0;
+
+  currentLyric: BaseLyricLine[];
+
+  private lyric: LyricC;
+
+  @ViewChildren(ScrollComponent) private scroll: QueryList<ScrollComponent>;
+  constructor(private songService: SongService) { }
 
   ngOnInit() {
   }
@@ -23,8 +35,46 @@ export class PlayerPanelComponent implements OnInit, OnChanges {
     if (changes.songList) {
       console.log('songList:', this.songList);
     }
+
     if (changes.currentSong) {
-      console.log('currentSong:', this.currentSong);
+      this.resetLyric();
+      this.songService.getSongLrc(this.currentSong.id).subscribe(res => {
+        this.lyric = new LyricC(res);
+        this.currentLyric = this.lyric.lines;
+      });
+    }
+
+    if (changes.show) {
+      if (this.show && !changes.show.firstChange) {
+        this.scroll.first.refreshScroll();
+        this.scroll.last.refreshScroll();
+        timer(80).subscribe(() => {
+          if (this.currentSong) {
+            this.scrollToCurrent();
+          }
+        });
+        /*setTimeout(() => {
+          if (this.currentSong) {
+            this.scrollToCurrent();
+          }
+        }, 80);*/
+      }
+    }
+
+    if (changes.songIndex && this.show) {
+      this.scrollToCurrent();
+    }
+  }
+
+  // 滚动到当前正在播放的歌曲
+  private scrollToCurrent() {
+    const songListRefs = this.scroll.first.el.nativeElement.querySelectorAll('ul li');
+    if (songListRefs.length) {
+      const  currentLi = songListRefs[this.songIndex || 0] as HTMLElement;
+      const offsetTop = currentLi.offsetTop;
+      if (offsetTop - Math.abs(this.scrollY) > 242 || offsetTop - Math.abs(this.scrollY) < 0) {
+        this.scroll.first.scrollToElement(currentLi, 300, false, false);
+      }
     }
   }
 
@@ -43,8 +93,16 @@ export class PlayerPanelComponent implements OnInit, OnChanges {
     return singers;
   }
 
+  // 当前索引值
   pushIndex(index: number) {
-    this.onMusis.emit(index);
+    this.onMusic.emit(index);
   }
 
+  // 重置 Lyric
+  private resetLyric() {
+    if (this.lyric) {
+      this.lyric = null;
+      this.currentLyric = [];
+    }
+  }
 }

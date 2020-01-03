@@ -1,10 +1,13 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {getCurrentIndex, getCurrentSong, getPlayList, getPlayMode, getSongList} from '../../../store/selectors/player.selector';
 import {SongSheetList} from '../../../services/data-type/common.types';
 import {PlayMode} from './player-type';
 import {SetCurrentIndex, SetPlayList, SetPlayMode} from '../../../store/actions/player.actions';
 import {shuffle} from '../../../utils/array';
+import {fromEvent, Subscription} from 'rxjs';
+import {AppStoreModule} from '../../../store';
+import {DOCUMENT} from '@angular/common';
 
 const modeTypes: PlayMode[] = [{
   type: 'loop',
@@ -34,11 +37,22 @@ export class PlayerComponent implements OnInit {
   playing =  false;
   songReady = false;
   show = false;
+  bufferPercent = 0;
+  percent = 0;
+  duration: number;
+  currentTime: number;
+  volume = 60;
+  isMute = false;
+  showVolumePanel = false;
+  selfClick = false;
 
   @ViewChild('audioEl', {static: true}) private audio: ElementRef;
   private audioEl: HTMLAudioElement;
+  private winClick: Subscription;
 
-  constructor(private store$: Store<{ player }>) {
+
+  constructor(private store$: Store<{ player: AppStoreModule }>,
+              @Inject(DOCUMENT) private doc: Document) {
     const appStore$ = this.store$.pipe(select('player'));
     appStore$.pipe(select(getSongList)).subscribe( list => {
       this.watchList(list, 'songList');
@@ -93,7 +107,10 @@ export class PlayerComponent implements OnInit {
   }
 
   private watchCurrentSong(song: SongSheetList) {
-    this.song = song;
+    if (song) {
+      this.song = song;
+      this.duration = song.dt / 1000;
+    }
   }
 
   // 获取歌曲图片Url
@@ -110,6 +127,7 @@ export class PlayerComponent implements OnInit {
 
   // 音乐播放
   private play() {
+    this.audioEl.volume = this.volume / 100;
     this.audioEl.play();
   }
 
@@ -127,6 +145,10 @@ export class PlayerComponent implements OnInit {
         this.audioEl.play();
       } else {
         this.audioEl.pause();
+      }
+    } else {
+      if (this.song) {
+        this.onCanPlay();
       }
     }
     return;
@@ -214,5 +236,64 @@ export class PlayerComponent implements OnInit {
   private updateCurrentIndex(list: SongSheetList[], song: SongSheetList) {
     const newIndex = list.findIndex(item => item.id === song.id);
     this.store$.dispatch(SetCurrentIndex({currentIndex: newIndex}));
+  }
+
+  onPercentChange(per: number) {
+    if (this.song) {
+      this.audioEl.currentTime = this.duration * (per / 100);
+    }
+  }
+
+  onTimeUpdate(e: Event) {
+    this.currentTime = (e.target as HTMLAudioElement).currentTime;
+    this.percent = (this.currentTime / this.duration) * 100;
+    const buffered = this.audioEl.buffered;
+    if (buffered.length && this.bufferPercent < 100) {
+      this.bufferPercent = (buffered.end(0) / this.duration) * 100;
+    }
+  }
+
+  onVolumeChange(per: number) {
+    const volume = per / 100;
+    if (volume) {
+      this.audioEl.volume = per / 100;
+      this.isMute = false;
+    } else {
+      this.audioEl.volume = per / 100;
+      this.isMute = true;
+    }
+  }
+
+  toggleVolPanel(evt: MouseEvent) {
+    evt.stopPropagation();
+    this.togglePanel();
+  }
+
+  private togglePanel() {
+    this.showVolumePanel = !this.showVolumePanel;
+    if (this.showVolumePanel) {
+      this.bindDocumentClickListener();
+    } else {
+      this.unbindDocumentClickListener();
+    }
+  }
+
+  private bindDocumentClickListener() {
+    if (!this.winClick) {
+      this.winClick = fromEvent(this.doc, 'click').subscribe(() => {
+        if (!this.selfClick) {
+          this.showVolumePanel = false;
+          this.unbindDocumentClickListener();
+        }
+        this.selfClick = false;
+      });
+    }
+  }
+
+  private unbindDocumentClickListener() {
+    if (this.winClick) {
+      this.winClick.unsubscribe();
+      this.winClick = null;
+    }
   }
 }
