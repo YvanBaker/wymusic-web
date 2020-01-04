@@ -35,7 +35,7 @@ BScroll.use(ScrollBar);
 export class ScrollComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() data: any[];
-  @Input() refreshDelay = 50;
+  @Input() refreshDelay = 1000;
   @ViewChild('wrap', { static: true }) private wrapRef: ElementRef;
   // tslint:disable-next-line:no-output-on-prefix
   @Output() private onScrollEnd = new EventEmitter<number>();

@@ -4,10 +4,10 @@ const timeExp = /\[(\d{1,2}):(\d{2})(?:\.(\d{2,3}))?\]/;
 
 export interface BaseLyricLine {
   txt: string;
-  txtCN: string;
+  txtCN?: string;
 }
 
-interface LyricLine extends BaseLyricLine {
+export interface LyricLine extends BaseLyricLine {
   time: number;
 }
 
@@ -45,7 +45,7 @@ export class LyricC {
         const txtCN = item ? item.replace(timeExp, '').trim() : '';
         // tslint:disable-next-line:radix
         const time = Number(result[1]) * 60 * 1000 + Number(result[2]) * 1000 + parseInt(result[3]);
-        console.log(this.lines.find(x => x.time === time).txtCN = txtCN);
+        this.lines.find(x => x.time === time).txtCN = txtCN;
       }
     });
   }
@@ -56,17 +56,16 @@ export class LyricC {
     lines.forEach(line => this.makeLine(line));
   }
 
-  private makeLine(line: string, tline = '') {
+  private makeLine(line: string) {
     const result = timeExp.exec(line);
     if (result) {
       const txt = line.replace(timeExp, '').trim();
-      const txtCN = tline ? tline.replace(timeExp, '').trim() : '';
       // tslint:disable-next-line:radix
       const time = Number(result[1]) * 60 * 1000 + Number(result[2]) * 1000 + parseInt(result[3]);
       if (txt) {
-        this.lines.push({txt, txtCN, time});
+        this.lines.push({txt, time});
       } else {
-        this.lines.push({txt, txtCN, time});
+        this.lines.push({txt, time});
       }
     }
   }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {getCurrentIndex, getCurrentSong, getPlayList, getPlayMode, getSongList} from '../../../store/selectors/player.selector';
 import {SongSheetList} from '../../../services/data-type/common.types';
@@ -26,7 +26,7 @@ const modeTypes: PlayMode[] = [{
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.less']
 })
-export class PlayerComponent implements OnInit {
+export class PlayerComponent implements OnInit, OnChanges {
   songList: SongSheetList[];
   playList: SongSheetList[];
   currentIndex: number;
@@ -73,6 +73,9 @@ export class PlayerComponent implements OnInit {
 
   ngOnInit() {
     this.audioEl = this.audio.nativeElement;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
   }
 
   private watchList(list: SongSheetList[], type: string) {
@@ -297,3 +300,5 @@ export class PlayerComponent implements OnInit {
     }
   }
 }
+
+
